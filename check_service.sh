@@ -12,10 +12,12 @@ do
     if service $i status &>/dev/null
     then
         echo "$i状态正常" 
-    else
-    (chkconfig --list $i &> /dev/null) || echo "$i服务不存在" | exit
+    elif chkconfig --list $i &> /dev/null
+    then
         service $i restart &>/dev/null
         (($?==0)) && echo "$i重启后已经ok" || echo "$i服务有问题"
+    else 
+        echo "$i服务不存在"
     fi
 done
 }
